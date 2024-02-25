@@ -1,7 +1,7 @@
 # MongoDB local server on Raspberrypi(Ubuntu os)
 
 
-## Aim: Build a local database for private network and insert data using api.
+## Aim: Build a local database for a private network and insert data using API.
 
 
 ### Prerequisites:
@@ -16,13 +16,13 @@
 * Install the 64-bit version of Ubuntu Server(20.04.5 LTS) on your Raspberry Pi.
 * Configure it to connect to your WiFi.
 * Correctly install MongoDB onto your Pi.
-* Create an api to insert data directly into the database using javascript
-* view your database using Mongodb compass 
+* Create an API to insert data directly into the database using javascript
+* view your database using MongoDB compass 
 
 
 
 ## Steps:
-## 1. Setting up raspberrypi :
+## 1. Setting up Raspberry Pi:
 
 *  Download and install the Raspberry Pi Imager for your host computer.
 * Run the Raspberry Pi Imager, and select Ubuntu Server 20.04, 64-bit for Raspberry Pi 3/4.
@@ -30,7 +30,7 @@
 * Click Write and wait for the image to be written to the SD Card. This may take some time! When it's finished, close the Raspberry Pi Imager. Then remove the Micro SD Card from your computer, and re-insert it.  
 
 
-The Ubuntu image for Raspberry Pi uses cloud-initto configure the system at boot time. This means that in your SD card system-boot volume, there should be a YAML file, called network-config. Open this file in VS Code (or your favourite text editor).
+The Ubuntu image for Raspberry Pi uses cloud-init to configure the system at boot time. This means that in your SD card system boot volume, there should be a YAML file, called network-config. Open this file in VS Code (or your favorite text editor).
 
 
 Edit it so that it looks like the following. The indentation is important, and it's the 'wifis' section that you're editing to match your wifi configuration. Replace 'YOUR-WIFI-SSD' with your WiFi's name, and 'YOUR-WIFI-PASSWORD' with your WiFi password.
@@ -62,7 +62,7 @@ sudo apt upgrade -y
 
 ### SSH to raspberry
 
-on your windows powershell run : 
+on your Windows Powershell run : 
 
 ```
     ssh ubuntu@<ipaddress>
@@ -79,15 +79,15 @@ Profile name can be anything
 
 
 
-## 2. Installing Mongodb 
-Disclaimer : The older version of Ubuntu servers (In this example - 20.04.5 LTS ) can install mongodb directly using apt package manager.
+## 2. Installing MongoDB 
+Disclaimer: The older version of Ubuntu servers (In this example - 20.04.5 LTS ) can install MongoDB directly using the apt package manager.
 
 Run this command :
 
 ```
 sudo apt intall mongodb
 ```
-Ubuntu 20.04 uses Systemd to run background services, so to set up mongod to run in the background, you need to enable and start the service:
+Ubuntu 20.04 uses Systemd to run background services, so to set up Mongod to run in the background, you need to enable and start the service:
 ```
 # Ensure mongod config is picked up:
 sudo systemctl daemon-reload
@@ -107,7 +107,7 @@ sudo systemctl status mongodb
 
  ![Alt text](image-1.png)
 
- If your service is running correctly, you can run the MongoDB client, mongo, from the command-line to connect:
+ If your service is running correctly, you can run the MongoDB client, mongo, from the command line to connect:
  ```
  mongo
  ```
@@ -115,10 +115,10 @@ sudo systemctl status mongodb
  ## 3. Make MongoDB Available to your Network
 
  If you want your database to be available to other computers on your network, you need to:
-* Bind MongoDb to the Raspberry Pi's public IP address.
+* Bind MongoDB to the Raspberry Pi's public IP address.
 * Open up port 27017 on the Raspberry Pi's firewall.
 
-you need to edit the mongodb configuration file to do this. use any text editor like nano/vim/vi.
+you need to edit the MongoDB configuration file to do this. use any text editor like nano/vim/vi.
 
 ```
 sudo nano /etc/mongodb.conf
@@ -139,7 +139,7 @@ Open up port 27017 on your Raspberry Pi's firewall:
 ```
 sudo ufw allow 27017/tcp
 ```
-Now, on another computer on your network, with the MongoDB client installed, run the following to ensure that mongod is available on your network:
+Now, on another computer on your network, with the MongoDB client installed, run the following to ensure that Mongod is available on your network:
 ```
 # Replace YOUR-RPI-IP-ADDRESS with your Raspberry Pi's actual IP address:
 mongo --host 'YOUR-RPI-IP-ADDRESS'
@@ -148,13 +148,13 @@ mongo --host 'YOUR-RPI-IP-ADDRESS'
 If it connects, then you've successfully installed and configured MongoDB on your Raspberry Pi!
 
 
-## Insert data using an api
+## Insert data using an API
 
-Using arp command, create a function which will retrive the ipaddress of the device using its mac address.I have already specified my raspberrypi's mac address in the code below.
+Using the arp command, create a function that will retrieve the IP address of the device using its Mac address. I have already specified my Raspberry's Mac address in the code below.
 ```js
 const macAddress = "e4-5f-01-f5-b5-46";
 
-// Function to get IP address from MAC address
+// Function to get an IP address from a MAC address
 function getIpFromMac(targetMac) {
    try {
          const arpOutput = execSync('arp -a', { encoding: 'utf-8' });
@@ -173,7 +173,7 @@ function escapeRegExp(string) {
 }
 
 ```
-Now i can specify the ip address in my code to insert data in the mongodb database
+Now I can specify the IP address in my code to insert data in the MongoDB database
 
 ```js
 const mongo_uri = `mongodb://${ipAddress}:27017/swayam`;
@@ -205,3 +205,6 @@ try {
 
 
 The complete code is provided in the main.js file.
+
+## Congratulations!
+### You are successfully running a MongoDB server locally on your Raspberry Pi.
